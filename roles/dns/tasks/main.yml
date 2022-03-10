@@ -1,0 +1,19 @@
+---
+
+- name: "Configure resolv.conf"
+  
+  vars:
+    resolv_nameservers:
+      - "8.8.8.8"
+      - "1.1.1.1"
+  template:
+    src: "/etc/ansible/templates/resolv.conf.j2"
+    dest: "/etc/resolv.conf"
+    mode: "0644"
+  become: true
+
+#- name: configure name servers
+#  net_system:
+#    name_servers:
+#      - 8.8.8.8
+#      - 1.1.1.1

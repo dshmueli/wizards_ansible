@@ -1,0 +1,12 @@
+---
+- hosts: wizards
+  become: True
+  become_method: sudo
+  roles:
+#    - host
+#    - dns
+#    - firewall
+    - apache
+  handlers:
+    - name: start apache
+      service: name=httpd state=started

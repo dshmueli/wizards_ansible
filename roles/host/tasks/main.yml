@@ -1,0 +1,22 @@
+---
+
+- name: change hostnames
+  hostname:
+    name: "webserver.localdomain"
+
+- name: restart machine
+#  shell: shutdown -r now "Ansible updates triggered"
+  shell: "sleep 5 && reboot"
+  async: 1
+  poll: 0
+  ignore_errors: True
+
+- name: Waiting for server to restart
+  reboot:
+
+- name: add myself to /etc/hosts
+  lineinfile:
+    dest: /etc/hosts
+    regexp: '^127\.0\.0\.1[ \t]+localhost'
+    line: '127.0.0.1 localhost webserver.localdomain'
+    state: present

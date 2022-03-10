@@ -1,0 +1,29 @@
+---
+
+#- name: Enforcing SELinux
+#  selinux:
+#    state: enforcing
+#    policy: targeted
+#  register: selinuxdisabled
+
+#- name: Wait for 5 Second and Reboot 
+#  shell: "sleep 5 && reboot"
+#  async: 1
+#  poll: 0
+#  when: selinuxdisabled is changed
+
+- name: Restart service cron on centos, in all cases, also issue daemon-reload to pick up config changes
+  ansible.builtin.systemd:
+    state: restarted
+    daemon_reload: yes
+    name: firewalld
+
+- name: FirewallD rules
+  firewalld:
+    permanent: yes
+    immediate: yes
+    service: "{{ item }}"
+    state: enabled
+  with_items:
+   - http
+   - https
